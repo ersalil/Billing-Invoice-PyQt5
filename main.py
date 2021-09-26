@@ -38,8 +38,9 @@ class Main(QMainWindow):
         loadUi('Dashboard.ui', self)
         self.row = 0
         self.totalPrice = 0
-        self.ivNo = int(keyring.get_password('BillingNumber', 'invoice_number'))
-        if self.ivNo is None:
+        try:
+            self.ivNo = int(keyring.get_password('BillingNumber', 'invoice_number'))
+        except:
             self.ivNo = 1000
             keyring.set_password('BillingNumber', 'invoice_number', self.ivNo)
         print(self.ivNo)
