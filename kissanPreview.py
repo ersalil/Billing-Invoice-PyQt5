@@ -1,0 +1,226 @@
+from englisttohindi.englisttohindi import EngtoHindi
+
+def run(a, b):
+    print(a, "\n",b)
+    string = f"""<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style>
+    table, th, td {{
+        border: 1px solid rgb(78, 78, 78);
+        border-collapse: collapse;
+    }}
+        table.center {{
+        margin-left: auto;
+        margin-right: auto;
+    }}
+        th, td {{
+        padding: 10px;
+    }}
+        body{{
+        margin-top:20px;
+        background:#eee;
+    }}
+
+    .invoice {{
+        background: #fff;
+        padding: 20px
+    }}
+
+    .invoice-company {{
+        font-size: 25px;
+        text-align: center
+    }}
+    .invoice-address {{
+        font-size: 15px;
+        text-align: center
+    }}
+
+    .invoice-header {{
+        margin: 0 -20px;
+        background: #f0f3f4;
+        padding: 20px
+    }}
+
+    .invoice-date,
+    .invoice-from,
+    .invoice-to {{
+        display: table-cell;
+        width: 1%
+    }}
+
+    .invoice-from,
+    .invoice-to {{
+        font-size: 20px;
+        padding-right: 20px
+    }}
+
+    .invoice-date .date,
+    .invoice-from strong,
+    .invoice-to strong{{
+        font-size: 24px;
+        font-weight: 600
+    }}
+
+    .invoice-date {{
+        text-align: right;
+        padding-left: 20px
+    }}
+    .invoice-detail {{
+        
+        font-size: 20px
+    }}
+    .invoice-price {{
+        background: #f0f3f4;
+        display: table;
+        width: 100%
+    }}
+
+    .invoice-price .invoice-price-left,
+    .invoice-price .invoice-price-right {{
+        display: table-cell;
+        padding: 20px;
+        font-size: 20px;
+        font-weight: 600;
+        width: 75%;
+        position: relative;
+        vertical-align: middle
+    }}
+
+    .invoice-price .invoice-price-left .sub-price {{
+        display: table-cell;
+        vertical-align: middle;
+        padding: 0 20px
+    }}
+
+    .invoice-price small {{
+        font-size: 12px;
+        font-weight: 400;
+        display: block
+    }}
+
+    .invoice-price .invoice-price-row {{
+        display: table;
+        float: left
+    }}
+
+    .invoice-price .invoice-price-right {{
+        width: 25%;
+        background: #2d353c;
+        color: #fff;
+        font-size: 28px;
+        text-align: right;
+        vertical-align: bottom;
+        font-weight: 300
+    }}
+
+    .invoice-price .invoice-price-right small {{
+        display: block;
+        opacity: .6;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        font-size: 12px
+    }}
+
+    .invoice-footer {{
+        border-top: 1px solid #ddd;
+        padding-top: 10px;
+        font-size: 10px
+    }}
+
+    .invoice-note {{
+        color: #999;
+        margin-top: 80px;
+        font-size: 85%
+    }}
+
+    .invoice>div:not(.invoice-footer) {{
+        margin-bottom: 20px
+    }}
+
+    .btn.btn-white, .btn.btn-white.disabled, .btn.btn-white.disabled:focus, .btn.btn-white.disabled:hover, .btn.btn-white[disabled], .btn.btn-white[disabled]:focus, .btn.btn-white[disabled]:hover {{
+        color: #2d353c;
+        background: #fff;
+        border-color: #d9dfe3;
+    }}
+    </style>
+    <div class="container">
+    <div class="col-md-12">
+        <div class="invoice">
+            <div class="invoice-company text-inverse f-w-600" >
+                <strong>एमएस अर्श ग्लोबल</strong><br>
+            </div>
+            <div class="invoice-address text-inverse f-w-600" >
+                सी ब्लॉक प्लेटफार्म<br>
+                ई-किसान मंडी योजना, टर्मिनल<br>
+                जयपुर<br>
+                किसान क्रिय पर्ची
+            </div>
+            <div class="invoice-header">
+                <div class="invoice-to">
+                    <small>इसके लिए इनवॉइस: </small>
+                    <address class="m-t-5 m-b-5">
+                        <strong class="text-inverse">{EngtoHindi(a[2]).convert}</strong><br>
+                        पता: {EngtoHindi(a[4]).convert}<br>
+                        फ़ोन: {a[3]}<br>
+                        आधार नंबर: {a[8]}<br>
+                        
+                    </address>
+                    भुगतान विवरण: dhbehdb@hndfje
+                </div>
+                <div class="invoice-date">
+                <medium>चालान विवरण</medium>
+                <div class="date text-inverse m-t-5">चालान नंबर: #{a[0]}</div>
+                <div class="invoice-detail">
+                    <large>चालान की तारीख: {a[1]}</large>
+                </div>
+                </div>
+            </div>
+            <div class="invoice-content">
+                <div class="table-responsive">
+                <table class="table table-invoice" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>आइटम नाम</th>
+                            <th class="text-center" width="10%">वजन</th>
+                            <th class="text-center" width="10%">दर</th>
+                            <th class="text-right" width="20%">राशि</th>
+                        </tr>
+                    </thead>
+                    <tbody>"""
+    string4 = ""                        
+    for item in b:
+        print(item)
+        string4 =  string4 + f"""<tr>
+            <td>
+            <span class="text-inverse">{EngtoHindi(item[0]).convert}</span><br>
+            </td>
+            <td class="text-center">{item[1]}</td>
+            <td class="text-center">₹{item[2]}</td>
+            <td class="text-right">₹{item[3]}</td>
+        </tr>"""
+
+    string2 = f"""</tbody>
+                </table>
+                </div>
+                <div class="invoice-price">
+                <div class="invoice-price-right">
+                    <small>कुल</small> <span class="f-w-600">₹287.5</span>
+                </div>
+                </div>
+            </div>
+            <div class="invoice-footer">
+                <p class="text-center m-b-5 f-w-600">
+                    खरीदारी करने के लिए धन्यवाद
+                </p>
+                <p class="text-center">
+                <span class="m-r-10"><a href="https://www.aubasket.com/"><i class="fa fa-fw fa-lg fa-globe"></i></a> target="_blank" rel="noopener noreferrer">AuBasket.com</span>
+                <span class="m-r-10"><a href="tel:+919887998853"><i class="fa fa-fw fa-lg fa-phone-volume"></i></a>+919887998853</span>
+                <span class="m-r-10"><a href="mailto:er.salilagrawal@gmail.com"><i class="fa fa-fw fa-lg fa-envelope"></i></a>er.salilagrawal@gmail.com</span>
+                </p>
+            </div>
+        </div>
+    </div>
+    </div>"""
+
+    return string+string4 +string2
