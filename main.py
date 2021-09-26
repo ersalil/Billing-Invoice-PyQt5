@@ -14,11 +14,12 @@ import os
 import win32api
 import win32print
 import sys
-import preview
+import kissanPreview
 import mail
 import threading
 import sqlite3 as sl
 import subprocess
+from os import path
 # with self.con:
         #     self.con.execute("""
         #         CREATE TABLE invoiceHistory (
@@ -38,17 +39,15 @@ class Main(QMainWindow):
         loadUi('Dashboard.ui', self)
         self.row = 0
         self.totalPrice = 0
-        try:
-            self.ivNo = int(keyring.get_password('BillingNumber', 'invoice_number'))
-        except:
-            self.ivNo = 1000
-            keyring.set_password('BillingNumber', 'invoice_number', self.ivNo)
+        self.con = sl.connect('my-test.db')
+        
+        self.ivNo = self.invoiceNofromDB()
         print(self.ivNo)
         self.invoiceNo.setText(str(self.ivNo))
         self.invoiceDate.setDate(QDate.currentDate())
         self.setWindowFlag(Qt.FramelessWindowHint, True)
         self.show()
-        self.con = sl.connect('my-test.db')
+        
         with self.con:
             self.checkData = list(self.con.execute("SELECT Date, Number, Name, Phone, Price, Address, Type, Payment, Aadhar, Orders FROM invoiceHistory"))
         self.folderInvoiceHtml = "filesHtml/"
@@ -62,7 +61,6 @@ class Main(QMainWindow):
         self.btn_minimize.clicked.connect(lambda: self.showMinimized())
         self.btn_maximize_restore.clicked.connect(lambda: self.window_size())
         self.btn_toggle_menu.clicked.connect(self.menu)
-        # self.paymentRadio.isChecked(lambda: self.accDetails.setFixedWidth(800))
         self.paymentRadio.toggled.connect(self.radioBtn)
         def moveWindow(e):
             if self.isMaximized() == False:
@@ -74,23 +72,20 @@ class Main(QMainWindow):
         self.frame_label_top_btns.mouseMoveEvent = moveWindow
         self.frame_grip.mouseMoveEvent = moveWindow
 
+    def invoiceNofromDB(self):
+        try:
+            with self.con:
+                into = list(self.con.execute("SELECT MAX(Number) FROM invoiceHistory"))
+            return int(into[0][0]) +1
+        except:
+            return 1000
+        
     def radioBtn(self, b):
         print("1")
         if b:
             self.accDetails.setFixedWidth(100)
         else:
             self.accDetails.setFixedWidth(0)
-    # def ifKissan(self, switch):
-    #     if switch:
-    #         self.toUser = "Kissan"
-    #     else:
-    #         self.toUser = "Customer"
-
-    # def ifPayment(self, checked):
-    #     if checked:
-    #         self.accDetails.setFixedWidth(800)
-    #     else:
-    #         self.paymentType = "Cash"
 
     def updateFields(self):
         print("3")
@@ -199,7 +194,7 @@ class Main(QMainWindow):
         if self.kissanSwitch.isChecked():
             self.ord.append("Kissan")
         else:
-            self.ord.append("User")
+            self.ord.append("Customer")
         if self.paymentRadio.isChecked():
             self.ord.append(self.accDetails.text())
         else:
@@ -207,12 +202,27 @@ class Main(QMainWindow):
         self.ord.append(self.aadharNo.text())
         self.ord.append(str(self.orders))
         self.total.setText(str(self.ord[5]))
-        self.html = preview.run(list(self.ord[:-1]), self.orders)
+        print(self.ord)
+        self.html = kissanPreview.run(list(self.ord[:-1]), self.orders)
+
+    # def checkPdf(self, no, html):
+    #     try:
+    #         path.exists(f"{os.getcwd()}\\invoices\\{no}.pdf")
+    #         return True
+    #     except:
+    #         self.createhtml(self.getItemOfCurrent('invoiceHistoryTable', 1), )
+    #         return False
+
+
+    # def createhtml(self, fname, fhtml):
+    #     f = open(f"{self.folderInvoiceHtml}{fname}.html", "a", encoding="utf-8")
+    #     f.write(fhtml)
+    #     f.close()
 
     def createInvoice(self):
         print("7")
         self.readTable()
-        f = open(f"{self.folderInvoiceHtml}{self.ivNo}.html", "a")
+        f = open(f"{self.folderInvoiceHtml}{self.ivNo}.html", "a", encoding="utf-8")
         f.write(self.html)
         f.close()
         self.invoicePreview.load(QtCore.QUrl.fromLocalFile(os.path.abspath(f"{self.folderInvoiceHtml}{self.ivNo}.html")))
@@ -256,7 +266,7 @@ class Main(QMainWindow):
         self.ivNo += 1
         self.reset()
         self.itemTable.setRowCount(0)
-        keyring.set_password('BillingNumber', 'invoice_number', self.ivNo)
+        self.ivNo = self.invoiceNofromDB()
         self.getInvoiceHistory()
         
     def getInvoiceHistory(self):

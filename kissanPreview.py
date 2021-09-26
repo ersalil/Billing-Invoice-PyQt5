@@ -154,7 +154,7 @@ def run(a, b):
                 सी ब्लॉक प्लेटफार्म<br>
                 ई-किसान मंडी योजना, टर्मिनल<br>
                 जयपुर<br>
-                किसान क्रिय पर्ची
+                {EngtoHindi(a[6]).convert} क्रिय पर्ची
             </div>
             <div class="invoice-header">
                 <div class="invoice-to">
@@ -214,7 +214,7 @@ def run(a, b):
                     खरीदारी करने के लिए धन्यवाद
                 </p>
                 <p class="text-center">
-                <span class="m-r-10"><a href="https://www.aubasket.com/"><i class="fa fa-fw fa-lg fa-globe"></i></a> target="_blank" rel="noopener noreferrer">AuBasket.com</span>
+                <span class="m-r-10" ><a href="https://www.aubasket.com/" target="_blank" rel="noopener noreferrer"><i class="fa fa-fw fa-lg fa-globe"></i></a>AuBasket.com</span>
                 <span class="m-r-10"><a href="tel:+919887998853"><i class="fa fa-fw fa-lg fa-phone-volume"></i></a>+919887998853</span>
                 <span class="m-r-10"><a href="mailto:er.salilagrawal@gmail.com"><i class="fa fa-fw fa-lg fa-envelope"></i></a>er.salilagrawal@gmail.com</span>
                 </p>
